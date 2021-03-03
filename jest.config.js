@@ -2,13 +2,11 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-
   clearMocks: true,
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '/node_modules/'
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
     '^.+\\.(css|less|scss)$': '<rootDir>/scripts/css-stub.js'
-  }
+  },
+  snapshotSerializers: ['@emotion/jest/serializer']
 }
