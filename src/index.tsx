@@ -1,10 +1,20 @@
 import * as React from 'react'
-import styles from './styles.module.scss'
+import { jsx, css } from '@emotion/react'
 
-interface Props {
+interface ExampleComponentProps {
   text: string
 }
 
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
+/** @jsx jsx */
+const ExampleComponentStyle = css`
+  margin: 2em;
+  padding: 0.5em;
+  border: 2px solid #000;
+  font-size: 2em;
+  text-align: center;
+`
+
+export const ExampleComponent: React.FC<ExampleComponentProps> = (props) => {
+  const { text } = props
+  return <div css={ExampleComponentStyle}>Example Component: {text}</div>
 }
