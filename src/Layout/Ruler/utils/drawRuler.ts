@@ -13,7 +13,7 @@ import { drawRulerScale } from './drawRulerScale'
  * @param { number } height 高度
  * @param { number } scale 缩放比例
  * @param { number } ratio 屏幕分辨率
- * @param { 'vertical' | 'horizontal' } direction 方向：竖 或 横
+ * @param { boolean | undefined } vertical 是否垂直
  * @return
  */
 export const drawRuler = ({
@@ -22,18 +22,17 @@ export const drawRuler = ({
   height,
   scale = 1,
   ratio,
-  direction = 'horizontal'
+  vertical
 }: {
   ctx: CanvasRenderingContext2D
   width: number
   height: number
   scale: number
   ratio: number
-  direction: 'vertical' | 'horizontal'
+  vertical?: boolean
 }) => {
   const obj = { ctx, height, width }
-
-  const isScaleVertical = !(direction === 'vertical')
+  const isScaleVertical = !vertical
 
   const {
     gridSizeSmall,
@@ -43,43 +42,39 @@ export const drawRuler = ({
     startValueLarge,
     offsetLarge,
     endValue
-  } = calcScaleValues({ scale, start: -23, length: 780 })
+  } = calcScaleValues({ scale, start: 0, length: 780 }) // TODO：写死的数值，扩展为变量
 
   initCanvas({ ...obj, ratio })
-  drawRulerBgColor({ ...obj, color: 'rgba(225,225,225, .3)' })
+  drawRulerBgColor({ ...obj, color: 'rgba(225,225,225, 0)' }) // TODO：写死的数值，扩展为变量
   drawRulerBgShadow({
     ctx,
-    width: 200,
+    width: 200, // TODO：写死的数值，扩展为变量
     height,
-    startPos: { x: 50, y: 0 },
-    color: '#E8E8E8'
+    startPos: { x: 50, y: 0 }, // TODO：写死的数值，扩展为变量
+    color: '#E8E8E8' // TODO：写死的数值，扩展为变量
   })
   drawRulerScale({
     ctx,
     scale,
-    startPos: isScaleVertical
-      ? { x: offsetSmall, y: 20 }
-      : { x: 20, y: offsetSmall },
+    startPos: isScaleVertical ? { x: offsetSmall, y: 20 } : { x: 20, y: offsetSmall }, // TODO：写死的数值，扩展为变量
     space: gridSizeSmall,
-    length: 20 * (3 / 8),
+    length: 20 * (3 / 8), // TODO：写死的数值，扩展为变量
     isVertical: isScaleVertical,
     startValue: startValueSmall,
     endValue: endValue,
-    color: '#BABBBC',
+    color: '#BABBBC', // TODO：写死的数值，扩展为变量
     isSmall: true
   })
   drawRulerScale({
     ctx,
     scale,
-    startPos: isScaleVertical
-      ? { x: offsetLarge, y: 20 }
-      : { x: 20, y: offsetLarge },
+    startPos: isScaleVertical ? { x: offsetLarge, y: 20 } : { x: 20, y: offsetLarge }, // TODO：写死的数值，扩展为变量
     space: gridSizeLarge,
-    length: 20,
+    length: 20, // TODO：写死的数值，扩展为变量
     isVertical: isScaleVertical,
     startValue: startValueLarge,
     endValue: endValue,
-    color: '#C8CDD0'
+    color: '#C8CDD0' // TODO：写死的数值，扩展为变量
   })
 
   ctx.setTransform(1, 0, 0, 1, 0, 0)

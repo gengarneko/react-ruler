@@ -5,5 +5,5 @@
  * @return
  */
 export const useRatio = () => {
-  return window.devicePixelRatio || 1
+  return window.devicePixelRatio
 }

@@ -51,16 +51,8 @@ export const drawRulerScale = ({
   // 设置刻度颜色
   ctx.strokeStyle = color
 
-  if (!isSmall) {
-    console.log(startValue.toString(), 1111111)
-  }
-
   // 规划子路径
-  for (
-    let value = startValue, count = 0;
-    value < endValue;
-    value += space, count++
-  ) {
+  for (let value = startValue, count = 0; value < endValue; value += space, count++) {
     // 当前路径起始位置（+ 0.5 增强绘制清晰度）
     const currentPos = {
       x: isVertical ? startPos.x + count * space * scale + 0.5 : startPos.x,
@@ -70,10 +62,7 @@ export const drawRulerScale = ({
     ctx.moveTo(currentPos.x, currentPos.y)
     // 小刻度和大刻度重合时，不绘制小刻度
     if ((isSmall && value % (space * 10) !== 0) || !isSmall) {
-      ctx.lineTo(
-        isVertical ? currentPos.x : currentPos.x - length,
-        isVertical ? currentPos.y - length : currentPos.y
-      )
+      ctx.lineTo(isVertical ? currentPos.x : currentPos.x - length, isVertical ? currentPos.y - length : currentPos.y)
     }
   }
   // 绘制路径
