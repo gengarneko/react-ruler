@@ -30,6 +30,8 @@ export const Ruler: React.FC<{ vertical?: boolean }> = ({ vertical }) => {
       ref={ref}
       width={width}
       height={height}
+      onMouseOver={rulerService.handleMouseOver}
+      onMouseOut={rulerService.handleMouseOut}
     />
   )
 }

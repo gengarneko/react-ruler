@@ -30,6 +30,7 @@ export const LayoutStyle = (style: { color: string; width: number; height: numbe
     }
   }
   .ruler-guides-container {
+    pointer-events: none;
     position: absolute;
     width: 100%;
     height: 100%;

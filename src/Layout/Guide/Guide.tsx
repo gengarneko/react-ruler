@@ -14,17 +14,20 @@ import { GuideLine } from './GuideLine/GuideLine'
  */
 export const Guide: React.FC = () => {
   const guideService = useGuideService()
+  const { lines, verticalLength, horizontalLength, allowLineEvent, handleMouseOver } = guideService
   return (
     <GuideService.Provider value={guideService}>
       <div className='ruler-guides-container'>
-        {guideService.lines.map((line) => {
+        {lines.map((line) => {
           const val = calcLineData(line)
           return (
             <GuideLine
               key={val.key}
               value={val.value}
               vertical={val.vertical}
-              length={val.vertical ? guideService.verticalLength : guideService.horizontalLength}
+              length={val.vertical ? verticalLength : horizontalLength}
+              allowLineEvent={allowLineEvent}
+              onMouseOver={handleMouseOver}
             />
           )
         })}

@@ -2,6 +2,7 @@ import React from 'react'
 import { jsx } from '@emotion/react'
 import { LayoutStyle } from './Layout.style'
 import { useLayoutService, LayoutService } from './useLayoutService'
+import { useHoverRulerService, HoverRulerService } from './useHoverRulerService'
 import { Ruler } from './Ruler/Ruler'
 import { Guide } from './Guide/Guide'
 
@@ -56,7 +57,10 @@ export const Layout: React.FC<LayoutProps> = (props) => {
     rulerBreadth
   } = props
 
+  // 注册顶层服务
   const layoutService = useLayoutService({ ...props })
+  // 注册 Ruler 区域 hover 事件服务
+  const hoverRulerService = useHoverRulerService()
 
   /**
    * NOTICE:
@@ -75,9 +79,11 @@ export const Layout: React.FC<LayoutProps> = (props) => {
         })}
       >
         <div className='ruler-corner' />
-        {controls.showRuler && <Ruler />}
-        {controls.showRuler && <Ruler vertical />}
-        {controls.showGuide && <Guide />}
+        <HoverRulerService.Provider value={hoverRulerService}>
+          {controls.showRuler && <Ruler />}
+          {controls.showRuler && <Ruler vertical />}
+          {controls.showGuide && <Guide />}
+        </HoverRulerService.Provider>
       </div>
     </LayoutService.Provider>
   )
