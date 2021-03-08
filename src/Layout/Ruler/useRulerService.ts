@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useEffect, MouseEvent } from 'react'
 import { drawRuler } from './utils/drawRuler'
 import { useRatio } from '../../hooks/useRatio'
 import { LayoutService } from '../useLayoutService'
@@ -35,16 +35,42 @@ export const useRulerService = (vertical?: boolean) => {
       }),
     []
   )
+
   // 将 Ruler hover 的状态置 true
   const setRulerHoveredToTrue = () => hoverRulerService.toggleRulerHovered(true)
+
   // 将 Ruler hover 的状态置 false
   const setRulerHoveredToFalse = () => hoverRulerService.toggleRulerHovered(false)
+
+  // Ruler 点击事件，创建 guide line
+  const createGuideLine = (e: MouseEvent<Element>) => {
+    const lineVertical = !vertical
+    // 鼠标到起始点的距离
+    const offset = lineVertical ? e.nativeEvent.offsetX : e.nativeEvent.offsetY
+    // 起始点数值
+    const start = lineVertical ? layoutService.startPoint.x : layoutService.startPoint.y
+    // 根据缩放率计算
+    const value = Math.round(start + offset / scale + breadth)
+    // 最终新辅助线的值
+    const newLine = lineVertical ? { x: value, y: undefined } : { x: undefined, y: value }
+
+    const lineList = layoutService.lines.concat(newLine)
+    console.log(value, 1111111)
+
+    console.log(newLine, lineList, layoutService.lines)
+    layoutService.setLines([...lineList])
+  }
+
+  useEffect(() => {
+    console.log(layoutService.lines, 4447777)
+  }, [layoutService.lines])
 
   return {
     draw: drawCanvas,
     width: vertical ? breadth : width - breadth,
     height: vertical ? height - breadth : breadth,
     handleMouseOver: setRulerHoveredToTrue,
-    handleMouseOut: setRulerHoveredToFalse
+    handleMouseOut: setRulerHoveredToFalse,
+    createGuideLine: createGuideLine
   }
 }

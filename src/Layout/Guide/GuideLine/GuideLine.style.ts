@@ -11,7 +11,7 @@ export const GuideLineStyle = (style: { vertical: boolean; value: number; allowL
   .ruler-guide-line {
     color: palevioletred;
     position: absolute;
-    cursor: ns-resize;
+    cursor: ${style.vertical ? `ew-resize` : `ns-resize`};
     line-height: 0;
     display: flex;
     flex-direction: column;

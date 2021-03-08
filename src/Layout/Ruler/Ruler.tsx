@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useRulerService } from './useRulerService'
 
 // * --------------------------------------------------------------------------- component
@@ -24,14 +24,20 @@ export const Ruler: React.FC<{ vertical?: boolean }> = ({ vertical }) => {
     }
   }, [ref])
 
-  return (
-    <canvas
-      className={`ruler-canvas ruler-canvas-${vertical ? 'vertical' : 'horizontal'}`}
-      ref={ref}
-      width={width}
-      height={height}
-      onMouseOver={rulerService.handleMouseOver}
-      onMouseOut={rulerService.handleMouseOut}
-    />
-  )
+  return useMemo(() => {
+    return (
+      <>
+        <>{console.log('------------ ruler render -----------')}</>
+        <canvas
+          className={`ruler-canvas ruler-canvas-${vertical ? 'vertical' : 'horizontal'}`}
+          ref={ref}
+          width={width}
+          height={height}
+          onMouseDown={rulerService.createGuideLine}
+          onMouseOver={rulerService.handleMouseOver}
+          onMouseOut={rulerService.handleMouseOut}
+        />
+      </>
+    )
+  }, [ref, width, height])
 }

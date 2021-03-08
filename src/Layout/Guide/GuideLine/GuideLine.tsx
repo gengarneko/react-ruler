@@ -18,6 +18,7 @@ export interface GuideLineProps {
   allowLineEvent: boolean
   // NOTICE: 避免层叠关系造成的选中问题
   onMouseOver: () => void
+  onMouseOut: () => void
 }
 
 // * --------------------------------------------------------------------------- component
@@ -32,9 +33,9 @@ export interface GuideLineProps {
 /** @jsx jsx */
 export const GuideLine: React.FC<GuideLineProps> = (props) => {
   // const guideLineService = useGuideLineService()
-  const { value, length, vertical, allowLineEvent, onMouseOver } = props
+  const { value, length, vertical, allowLineEvent, onMouseOver, onMouseOut } = props
   return (
-    <div css={GuideLineStyle({ vertical, value, allowLineEvent })} onMouseOver={onMouseOver}>
+    <div css={GuideLineStyle({ vertical, value, allowLineEvent })} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
       <div className='ruler-guide-line'>
         <svg
           width={vertical ? 1 : length}

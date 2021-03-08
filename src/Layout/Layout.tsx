@@ -8,17 +8,24 @@ import { Guide } from './Guide/Guide'
 
 // * --------------------------------------------------------------------------- interface
 
+// 辅助线对象类型
+export type LineType = { x: number; y: undefined } | { x: undefined; y: number }
 export interface LayoutProps {
-  // 宽度
+  // 容器宽度
   width: number
-  // 高度
+  // 容器高度
   height: number
+  // 左上角的起始坐标
+  startPoint?: {
+    x: number
+    y: number
+  }
   // 缩放大小
   scale: number
   // 辅助线列表 getter
-  lines: ({ x: number; y: undefined } | { x: undefined; y: number })[]
+  lines: LineType[]
   // 辅助线列表 setter
-  setLines: (lines: ({ x: number; y: undefined } | { x: undefined; y: number })[]) => void
+  setLines: (lines: LineType[]) => void
   // 控件选项
   controls?: {
     // 显示辅助线
@@ -26,8 +33,8 @@ export interface LayoutProps {
     // 显示标尺
     showRuler?: boolean
   }
-  // 刻度尺高度
-  rulerBreadth: number
+  // 刻度尺宽度
+  breadth: number
 }
 
 // * --------------------------------------------------------------------------- component
@@ -45,23 +52,22 @@ export interface LayoutProps {
  */
 /** @jsx jsx */
 export const Layout: React.FC<LayoutProps> = (props) => {
+  const defaultVal = { startPoint: { x: 0, y: 0 } }
+  // 注册顶层服务
+  const layoutService = useLayoutService({ ...props, ...defaultVal })
+  // 注册 Ruler 区域 hover 事件服务
+  const hoverRulerService = useHoverRulerService()
+
   const {
     width,
     height,
-    // scale,
-    // lines,
     controls = {
       showGuide: true,
       showRuler: true
     },
-    rulerBreadth
-  } = props
-
-  // 注册顶层服务
-  const layoutService = useLayoutService({ ...props })
-  // 注册 Ruler 区域 hover 事件服务
-  const hoverRulerService = useHoverRulerService()
-
+    breadth
+  } = layoutService
+  const { showGuide, showRuler } = controls
   /**
    * NOTICE:
    *  这里包含了组件渲染和服务注册，原则上应拆分，这里为了减少层级关系所以这么组织
@@ -75,14 +81,14 @@ export const Layout: React.FC<LayoutProps> = (props) => {
           color: '#eee',
           width,
           height,
-          breadth: rulerBreadth
+          breadth
         })}
       >
         <div className='ruler-corner' />
         <HoverRulerService.Provider value={hoverRulerService}>
-          {controls.showRuler && <Ruler />}
-          {controls.showRuler && <Ruler vertical />}
-          {controls.showGuide && <Guide />}
+          {showRuler && <Ruler />}
+          {showRuler && <Ruler vertical />}
+          {showGuide && <Guide />}
         </HoverRulerService.Provider>
       </div>
     </LayoutService.Provider>

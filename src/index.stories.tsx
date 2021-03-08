@@ -1,8 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react/types-6-0'
 import { Ruler } from './index'
-
-// * --------------------------------------------------------------------------- main
+import { Example } from './example'
 
 export default {
   title: 'Ruler',
@@ -17,36 +16,13 @@ export default {
   }
 } as Meta
 
-const lines = [
-  { x: 30 },
-  { x: 32 },
-  { x: 120 },
-  { x: 250 },
-  { x: 300 },
-  { x: 410 },
-  { x: 590 },
-  { y: 42 },
-  { y: 40 },
-  { y: 160 },
-  { y: 210 },
-  { y: 380 }
-]
+const Template: Story<{ direction: 'Vertical' | 'Horizontal' }> = (args) => <Example />
 
-const handleLinesChange = (val: any) => {
-  console.log(val, 111111111)
-}
-
-const Template: Story<{ direction: 'Vertical' | 'Horizontal' }> = (args) => (
-  <Ruler width={600} height={400} lines={lines} scale={1} rulerBreadth={20} setLines={handleLinesChange} />
-)
-
-// * --------------------------------------------------------------------------- index
-
-export const Example = Template.bind({})
-Example.args = {
+export const Index = Template.bind({})
+Index.args = {
   direction: 'Vertical'
 }
-Example.parameters = {
+Index.parameters = {
   backgrounds: {
     values: [
       { name: 'white', value: '#fff' },

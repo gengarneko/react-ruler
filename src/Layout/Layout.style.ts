@@ -26,7 +26,7 @@ export const LayoutStyle = (style: { color: string; width: number; height: numbe
     &.ruler-canvas-horizontal {
       top: 0;
       left: ${style.breadth}px;
-      border-bottom: 1px solid #c8cdd0;
+      border-bottom: 1px solid #c8cdd0;x
     }
   }
   .ruler-guides-container {

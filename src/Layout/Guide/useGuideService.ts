@@ -27,7 +27,8 @@ export const useGuideService = () => {
     // 允许操作辅助线
     allowLineEvent: hoverRulerService.isRulerHovered,
     // NOTICE: 避免层叠关系造成的选中问题，所以不能只监听 ruler 区域的鼠标事件
-    handleMouseOver: () => hoverRulerService.toggleRulerHovered(true)
+    handleMouseOver: () => hoverRulerService.toggleRulerHovered(true),
+    handleMouseOut: () => hoverRulerService.toggleRulerHovered(false)
   }
 }
 

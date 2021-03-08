@@ -14,7 +14,7 @@ import { GuideLine } from './GuideLine/GuideLine'
  */
 export const Guide: React.FC = () => {
   const guideService = useGuideService()
-  const { lines, verticalLength, horizontalLength, allowLineEvent, handleMouseOver } = guideService
+  const { lines, verticalLength, horizontalLength, allowLineEvent, handleMouseOver, handleMouseOut } = guideService
   return (
     <GuideService.Provider value={guideService}>
       <div className='ruler-guides-container'>
@@ -28,6 +28,7 @@ export const Guide: React.FC = () => {
               length={val.vertical ? verticalLength : horizontalLength}
               allowLineEvent={allowLineEvent}
               onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
             />
           )
         })}
