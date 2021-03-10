@@ -14,7 +14,9 @@ interface UseLayoutServiceProps extends LayoutProps {
  * @param { LayoutProps } props 组件参数
  * @return
  */
-export const useLayoutService = (props: UseLayoutServiceProps) => props
+export const useLayoutService = (props: UseLayoutServiceProps) => {
+  return props
+}
 
 /* 将这个服务注册到组件顶部 */
 export const LayoutService = getServiceToken(useLayoutService)

@@ -1,25 +1,35 @@
-import React from 'react'
-import { jsx } from '@emotion/react'
-import { GuideLineStyle } from './GuideLine.style'
-// import { useGuideLineService } from './useGuideLineService'
+import React, { useEffect } from 'react'
+import { jsx, css } from '@emotion/react'
+import { useGuideLineService, GuideLineService } from './useGuideLineService'
+import { NumberBlock } from './component/NumberBlock'
 
-// * --------------------------------------------------------------------------- interface
+// * --------------------------------------------------------------------------- style
 
-export interface GuideLineProps {
-  // 唯一标识符
-  key: string
-  // 数值
-  value: number
-  // 长度
-  length: number
-  // 是否竖线
+export const GuideLineStyle = (style: {
+  start: number
   vertical: boolean
-  // 是否允许操作 guide lines
+  value: number
   allowLineEvent: boolean
-  // NOTICE: 避免层叠关系造成的选中问题
-  onMouseOver: () => void
-  onMouseOut: () => void
-}
+  breadth: number
+}) => css`
+  position: absolute;
+  pointer-events: ${style.allowLineEvent ? 'auto' : 'none'};
+  font-size: 12px;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  transform: ${style.vertical
+    ? `translateX(${style.value + style.breadth - style.start}px)`
+    : `translateY(${style.value + style.breadth - style.start}px)`};
+  .ruler-guide-line {
+    color: palevioletred;
+    position: absolute;
+    cursor: ${style.vertical ? `ew-resize` : `ns-resize`};
+    line-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+`
 
 // * --------------------------------------------------------------------------- component
 
@@ -27,22 +37,48 @@ export interface GuideLineProps {
  * 辅助线组件
  *
  * @export
- * @param { GuideLine } props
+ * @param { string } key 唯一标识符
  * @return
  */
 /** @jsx jsx */
-export const GuideLine: React.FC<GuideLineProps> = (props) => {
-  // const guideLineService = useGuideLineService()
-  const { value, length, vertical, allowLineEvent, onMouseOver, onMouseOut } = props
+export const GuideLine: React.FC<{ uuid: string }> = (props) => {
+  const guideLineService = useGuideLineService()
+
+  useEffect(() => {
+    guideLineService.setUuid(props.uuid)
+  }, [props, guideLineService])
+
   return (
-    <div css={GuideLineStyle({ vertical, value, allowLineEvent })} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-      <div className='ruler-guide-line'>
-        <svg
-          width={vertical ? 1 : length}
-          height={vertical ? length : 1}
-          style={{ backgroundColor: 'palevioletred' }}
-        />
-      </div>
-    </div>
+    <>
+      {guideLineService.number !== undefined && (
+        <GuideLineService.Provider value={guideLineService}>
+          <div
+            css={GuideLineStyle({
+              start: guideLineService.start,
+              vertical: guideLineService.vertical,
+              value: guideLineService.number,
+              allowLineEvent: guideLineService.allowLineEvent,
+              breadth: guideLineService.breadth
+            })}
+            onMouseEnter={guideLineService.handleMouseEnter}
+            onMouseLeave={guideLineService.handleMouseLeave}
+            onMouseDown={guideLineService.handleMouseDown}
+          >
+            <div className='ruler-guide-line'>
+              <svg
+                width={guideLineService.svgWidth}
+                height={guideLineService.svgHeight}
+                style={{ backgroundColor: 'palevioletred' }}
+              />
+            </div>
+            <NumberBlock
+              number={guideLineService.number}
+              breadth={guideLineService.breadth}
+              vertical={guideLineService.vertical}
+            />
+          </div>
+        </GuideLineService.Provider>
+      )}
+    </>
   )
 }

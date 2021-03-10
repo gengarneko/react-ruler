@@ -1,5 +1,19 @@
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useRulerService } from './useRulerService'
+import { jsx, css } from '@emotion/react'
+
+// * --------------------------------------------------------------------------- style
+
+const RulerStyle = (style: { breadth: number; vertical: boolean }) => css`
+  position: absolute;
+  box-sizing: border-box;
+  pointer-events: auto;
+  user-select: none;
+  top: ${style.vertical ? `${style.breadth}px` : `0`};
+  left: ${style.vertical ? `0` : `${style.breadth}px`};
+  border-right: ${style.vertical ? `1px solid #c8cdd0` : ``};
+  border-bottom: ${style.vertical ? `` : `1px solid #c8cdd0`};
+`
 
 // * --------------------------------------------------------------------------- component
 
@@ -12,32 +26,31 @@ import { useRulerService } from './useRulerService'
  * @param { boolean } vertical 竖直展现
  * @return
  */
+/** @jsx jsx */
 export const Ruler: React.FC<{ vertical?: boolean }> = ({ vertical }) => {
   const ref = useRef() as React.MutableRefObject<HTMLCanvasElement>
-  const rulerService = useRulerService(vertical)
-  const { draw, width, height } = rulerService
+  const rulerService = useRulerService()
+
+  useEffect(() => {
+    rulerService.toggleVertical(vertical ?? false)
+  }, [vertical])
 
   useEffect(() => {
     if (ref?.current) {
       const ctx = ref.current.getContext('2d')
-      ctx && draw(ctx)
+      ctx && rulerService.draw(ctx)
     }
-  }, [ref])
+  }, [ref, rulerService])
 
-  return useMemo(() => {
-    return (
-      <>
-        <>{console.log('------------ ruler render -----------')}</>
-        <canvas
-          className={`ruler-canvas ruler-canvas-${vertical ? 'vertical' : 'horizontal'}`}
-          ref={ref}
-          width={width}
-          height={height}
-          onMouseDown={rulerService.createGuideLine}
-          onMouseOver={rulerService.handleMouseOver}
-          onMouseOut={rulerService.handleMouseOut}
-        />
-      </>
-    )
-  }, [ref, width, height])
+  return (
+    <canvas
+      css={RulerStyle({ breadth: rulerService.breadth, vertical: vertical || false })}
+      ref={ref}
+      width={rulerService.width}
+      height={rulerService.height}
+      onMouseDown={rulerService.createGuideLine}
+      onMouseOver={rulerService.handleMouseOver}
+      onMouseOut={rulerService.handleMouseOut}
+    />
+  )
 }

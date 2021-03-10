@@ -16,7 +16,8 @@ export default {
   }
 } as Meta
 
-const Template: Story<{ direction: 'Vertical' | 'Horizontal' }> = (args) => <Example />
+// const Template: Story<{ direction: 'Vertical' | 'Horizontal' }> = (args) => <Example />
+const Template: Story = () => <Example />
 
 export const Index = Template.bind({})
 Index.args = {

@@ -1,7 +1,19 @@
 import React from 'react'
 import { useGuideService, GuideService } from './useGuideService'
-import { calcLineData } from './utils/calcLineData'
 import { GuideLine } from './GuideLine/GuideLine'
+
+import { jsx, css } from '@emotion/react'
+
+// * --------------------------------------------------------------------------- style
+
+const GuideStyle = css`
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`
+
+// * --------------------------------------------------------------------------- component
 
 /**
  * 辅助线组件
@@ -12,26 +24,14 @@ import { GuideLine } from './GuideLine/GuideLine'
  * @export
  * @return
  */
+/** @jsx jsx */
 export const Guide: React.FC = () => {
   const guideService = useGuideService()
-  const { lines, verticalLength, horizontalLength, allowLineEvent, handleMouseOver, handleMouseOut } = guideService
+
   return (
     <GuideService.Provider value={guideService}>
-      <div className='ruler-guides-container'>
-        {lines.map((line) => {
-          const val = calcLineData(line)
-          return (
-            <GuideLine
-              key={val.key}
-              value={val.value}
-              vertical={val.vertical}
-              length={val.vertical ? verticalLength : horizontalLength}
-              allowLineEvent={allowLineEvent}
-              onMouseOver={handleMouseOver}
-              onMouseOut={handleMouseOut}
-            />
-          )
-        })}
+      <div css={GuideStyle}>
+        {guideService.lineList.map((line) => line.uuid && <GuideLine key={line.uuid} uuid={line.uuid} />)}
       </div>
     </GuideService.Provider>
   )

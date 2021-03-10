@@ -10,9 +10,7 @@ import { getServiceToken } from '../utils/getServiceToken'
  */
 export const useHoverRulerService = () => {
   const [isRulerHovered, setIsRulerHovered] = useState<boolean>(false)
-  // TODO: 每次 hover 的时候都会造成 set 函数变化，引起不必要的渲染
-  const toggleRulerHovered = (status?: boolean) =>
-    status ? setIsRulerHovered(status) : setIsRulerHovered(!isRulerHovered)
+  const toggleRulerHovered = (status?: boolean) => setIsRulerHovered(status ?? !isRulerHovered)
   return { isRulerHovered, toggleRulerHovered }
 }
 
