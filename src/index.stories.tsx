@@ -1,29 +1,29 @@
 import React from 'react'
-// also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Story, Meta } from '@storybook/react/types-6-0'
-
-import { ExampleComponent } from '.'
+import { Ruler } from './index'
+import { Example } from './example'
 
 export default {
-  title: 'ExampleComponent',
-  component: ExampleComponent,
+  title: 'Ruler',
+  component: Ruler,
   argTypes: {
-    text: {
-      name: '文本',
-      type: { name: 'string', required: false }
+    direction: {
+      control: {
+        type: 'select',
+        options: ['Vertical', 'Horizontal']
+      }
     }
   }
 } as Meta
 
-const Template: Story<{ text: string }> = (args) => (
-  <ExampleComponent {...args} />
-)
+// const Template: Story<{ direction: 'Vertical' | 'Horizontal' }> = (args) => <Example />
+const Template: Story = () => <Example />
 
-export const Primary = Template.bind({})
-Primary.args = {
-  text: 'This is a example'
+export const Index = Template.bind({})
+Index.args = {
+  direction: 'Vertical'
 }
-Primary.parameters = {
+Index.parameters = {
   backgrounds: {
     values: [
       { name: 'white', value: '#fff' },
